@@ -21,8 +21,9 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.mc.crearBoton(this.btnCerrar, "ico_cerrar.png", "ico_cerrar_hover.png");
         this.mc.crearBoton(this.btnMinimizar, "ico_minimizar.png", "ico_minimizar_hover.png");
-        this.mc.crearBoton(this.btnRegistrarme, "", "");
+        this.mc.crearBoton(this.btnMostrarRegistro, "", "");
         this.txtContrasenia.setEchoChar('\u2022');
+        this.pnlDerechaRegistro.setVisible(false);
     }
 // </editor-fold>
     @SuppressWarnings("unchecked")
@@ -40,14 +41,16 @@ public class Login extends javax.swing.JFrame {
         lblXD = new javax.swing.JLabel();
         lblXD3 = new javax.swing.JLabel();
         lblXD4 = new javax.swing.JLabel();
-        btnIniciarSesion = new javax.swing.JButton();
+        btnRegistrarme = new javax.swing.JButton();
+        lblMensajeErroresRegistro = new javax.swing.JLabel();
         lblXD2 = new javax.swing.JLabel();
-        btnRegistrarme = new javax.swing.JLabel();
+        btnMostrarRegistro = new javax.swing.JLabel();
         txtContrasenia = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
         lblXD1 = new javax.swing.JLabel();
-        lblMensajeErrores = new javax.swing.JLabel();
+        lblMensajeErroresLogin = new javax.swing.JLabel();
+        btnIniciarSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -78,67 +81,88 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Registro");
-        pnlDerechaRegistro.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 380, 100));
+        pnlDerechaRegistro.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 380, 100));
 
         txtContraseniaResgister.setBackground(new java.awt.Color(255, 255, 255));
         txtContraseniaResgister.setFont(new java.awt.Font("Trebuchet MS", 0, 16)); // NOI18N
         txtContraseniaResgister.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 255, 153), 3, true));
-        pnlDerechaRegistro.add(txtContraseniaResgister, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 360, 250, 40));
+        txtContraseniaResgister.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtContraseniaResgisterKeyTyped(evt);
+            }
+        });
+        pnlDerechaRegistro.add(txtContraseniaResgister, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 330, 250, 40));
 
         txtCedRegister.setBackground(new java.awt.Color(255, 255, 255));
         txtCedRegister.setFont(new java.awt.Font("Trebuchet MS", 0, 16)); // NOI18N
         txtCedRegister.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 255, 153), 3, true));
-        pnlDerechaRegistro.add(txtCedRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 200, 250, 40));
+        txtCedRegister.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCedRegisterKeyTyped(evt);
+            }
+        });
+        pnlDerechaRegistro.add(txtCedRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, 250, 40));
 
         txtMailRegister.setBackground(new java.awt.Color(255, 255, 255));
         txtMailRegister.setFont(new java.awt.Font("Trebuchet MS", 0, 16)); // NOI18N
         txtMailRegister.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 255, 153), 3, true));
-        pnlDerechaRegistro.add(txtMailRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 250, 40));
+        txtMailRegister.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMailRegisterKeyTyped(evt);
+            }
+        });
+        pnlDerechaRegistro.add(txtMailRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 250, 40));
 
         lblXD.setFont(new java.awt.Font("Trebuchet MS", 0, 13)); // NOI18N
         lblXD.setForeground(new java.awt.Color(51, 51, 51));
         lblXD.setText("Contraseña:");
-        pnlDerechaRegistro.add(lblXD, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 340, -1, -1));
+        pnlDerechaRegistro.add(lblXD, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, -1, -1));
 
         lblXD3.setFont(new java.awt.Font("Trebuchet MS", 0, 13)); // NOI18N
         lblXD3.setForeground(new java.awt.Color(51, 51, 51));
         lblXD3.setText("Cedula:");
-        pnlDerechaRegistro.add(lblXD3, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 180, -1, -1));
+        pnlDerechaRegistro.add(lblXD3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 150, -1, -1));
 
         lblXD4.setFont(new java.awt.Font("Trebuchet MS", 0, 13)); // NOI18N
         lblXD4.setForeground(new java.awt.Color(51, 51, 51));
         lblXD4.setText("Correo electronico:");
-        pnlDerechaRegistro.add(lblXD4, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 260, -1, -1));
+        pnlDerechaRegistro.add(lblXD4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 230, -1, -1));
 
-        pnlPrincipal.add(pnlDerechaRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 370, 550));
-
-        btnIniciarSesion.setBackground(new java.awt.Color(153, 255, 153));
-        btnIniciarSesion.setFont(new java.awt.Font("Trebuchet MS", 0, 16)); // NOI18N
-        btnIniciarSesion.setForeground(new java.awt.Color(0, 0, 0));
-        btnIniciarSesion.setText("Iniciar Sesion");
-        btnIniciarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnIniciarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnRegistrarme.setBackground(new java.awt.Color(255, 255, 255));
+        btnRegistrarme.setFont(new java.awt.Font("Trebuchet MS", 0, 16)); // NOI18N
+        btnRegistrarme.setForeground(new java.awt.Color(0, 0, 0));
+        btnRegistrarme.setText("Registrarme");
+        btnRegistrarme.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegistrarme.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnIniciarSesionMouseClicked(evt);
+                btnRegistrarmeMouseClicked(evt);
             }
         });
-        pnlPrincipal.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(101, 450, 160, 50));
+        pnlDerechaRegistro.add(btnRegistrarme, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 450, 160, 50));
+
+        lblMensajeErroresRegistro.setForeground(new java.awt.Color(255, 0, 0));
+        lblMensajeErroresRegistro.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblMensajeErroresRegistro.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        lblMensajeErroresRegistro.setPreferredSize(new java.awt.Dimension(250, 50));
+        pnlDerechaRegistro.add(lblMensajeErroresRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 370, 250, -1));
+
+        pnlPrincipal.add(pnlDerechaRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 370, 550));
 
         lblXD2.setFont(new java.awt.Font("Trebuchet MS", 0, 13)); // NOI18N
         lblXD2.setForeground(new java.awt.Color(51, 51, 51));
         lblXD2.setText("Contraseña:");
         pnlPrincipal.add(lblXD2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 320, -1, -1));
 
-        btnRegistrarme.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
-        btnRegistrarme.setForeground(new java.awt.Color(51, 51, 51));
-        btnRegistrarme.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        btnRegistrarme.setText("Registrarme");
-        btnRegistrarme.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnMostrarRegistro.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
+        btnMostrarRegistro.setForeground(new java.awt.Color(51, 51, 51));
+        btnMostrarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        btnMostrarRegistro.setText("Registrarme");
+        btnMostrarRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnRegistrarmeMouseClicked(evt);
+                btnMostrarRegistroMouseClicked(evt);
             }
         });
-        pnlPrincipal.add(btnRegistrarme, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 530, 70, -1));
+        pnlPrincipal.add(btnMostrarRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 530, 70, -1));
 
         txtContrasenia.setBackground(new java.awt.Color(255, 255, 255));
         txtContrasenia.setFont(new java.awt.Font("Trebuchet MS", 0, 16)); // NOI18N
@@ -171,11 +195,23 @@ public class Login extends javax.swing.JFrame {
         lblXD1.setText("Cedula o correo electronico:");
         pnlPrincipal.add(lblXD1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, -1, -1));
 
-        lblMensajeErrores.setForeground(new java.awt.Color(255, 0, 0));
-        lblMensajeErrores.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblMensajeErrores.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        lblMensajeErrores.setPreferredSize(new java.awt.Dimension(250, 50));
-        pnlPrincipal.add(lblMensajeErrores, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 382, 250, 50));
+        lblMensajeErroresLogin.setForeground(new java.awt.Color(255, 0, 0));
+        lblMensajeErroresLogin.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblMensajeErroresLogin.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        lblMensajeErroresLogin.setPreferredSize(new java.awt.Dimension(250, 50));
+        pnlPrincipal.add(lblMensajeErroresLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 382, 250, 50));
+
+        btnIniciarSesion.setBackground(new java.awt.Color(153, 255, 153));
+        btnIniciarSesion.setFont(new java.awt.Font("Trebuchet MS", 0, 16)); // NOI18N
+        btnIniciarSesion.setForeground(new java.awt.Color(0, 0, 0));
+        btnIniciarSesion.setText("Iniciar Sesion");
+        btnIniciarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnIniciarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnIniciarSesionMouseClicked(evt);
+            }
+        });
+        pnlPrincipal.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(101, 450, 160, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -201,6 +237,62 @@ public class Login extends javax.swing.JFrame {
         setState(ICONIFIED);
     }//GEN-LAST:event_btnMinimizarMouseClicked
 
+    private void btnRegistrarmeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarmeMouseClicked
+        String resultado = this.ap.compRegistro(this.txtCedRegister.getText().trim(), this.txtMailRegister.getText().trim(), this.txtContraseniaResgister.getText().trim());
+        if(!resultado.isBlank()){
+            String error1 = "";
+            String error2 = "";
+            String error3 = "";
+            String error4 = "";
+            String error5 = "";
+            for(int i=0; i<resultado.length(); i++){
+                if(resultado.charAt(i) == 'c'){
+                    error1 = "*Formato cedula no valida<br>";
+                    this.mc.colorTextFieldJ(this.txtCedRegister, Color.RED, Color.GREEN);
+                }
+                if(resultado.charAt(i) == 'd'){
+                    error2 = "*Cedula ya existente<br>";
+                    this.mc.colorTextFieldJ(this.txtCedRegister, Color.RED, Color.GREEN);
+                }
+                if(resultado.charAt(i) == 'm'){
+                    error3 = "*Formato correo no valido<br>";
+                    this.mc.colorTextFieldJ(this.txtMailRegister, Color.RED, Color.GREEN);
+                }
+                if(resultado.charAt(i) == 'o'){
+                    error4 = "*Correo ya existente<br>";
+                    this.mc.colorTextFieldJ(this.txtMailRegister, Color.RED, Color.GREEN);
+                }
+                if(resultado.charAt(i) == 'p'){
+                    error5 = "*Contraseña no valida<br>";
+                    this.mc.colorTextFieldJ(this.txtMailRegister, Color.RED, Color.GREEN);
+                }
+            }
+            this.lblMensajeErroresRegistro.setText("<html>"+error1+error2+error3+error4+error5+"</html>");
+            return;
+        }
+        if(this.ap.intentarRegistrar(this.txtCedRegister.getText().trim(), this.txtMailRegister.getText().trim(), this.txtContraseniaResgister.getText().trim())){
+            JOptionPane.showMessageDialog(this, "Se registro correctamente");
+        }else{
+            JOptionPane.showMessageDialog(this, "No se registro");
+        }
+    }//GEN-LAST:event_btnRegistrarmeMouseClicked
+
+    private void btnMostrarRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMostrarRegistroMouseClicked
+        if(this.pnlDerechaRegistro.isVisible()){
+            this.pnlDerechaRegistro.setVisible(false);
+        }else{
+            this.pnlDerechaRegistro.setVisible(true);
+        }
+    }//GEN-LAST:event_btnMostrarRegistroMouseClicked
+
+    private void txtUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyTyped
+        this.lblMensajeErroresLogin.setText("");
+    }//GEN-LAST:event_txtUsuarioKeyTyped
+
+    private void txtContraseniaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContraseniaKeyTyped
+        this.lblMensajeErroresLogin.setText("");
+    }//GEN-LAST:event_txtContraseniaKeyTyped
+
     private void btnIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseClicked
         String respuesta = this.ap.compLogin(this.txtUsuario.getText().trim(), this.mc.claveToString(this.txtContrasenia));
         if(!respuesta.isBlank()){
@@ -208,6 +300,7 @@ public class Login extends javax.swing.JFrame {
             String error2 = "";
             String error3 = "";
             String error4 = "";
+            String error5 = "";
             for(int i=0; i<respuesta.length(); i++){
                 if(respuesta.charAt(i) == 'b'){
                     this.mc.colorTextFieldJ(this.txtUsuario, Color.RED,Color.GREEN);
@@ -218,51 +311,53 @@ public class Login extends javax.swing.JFrame {
                     this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED,Color.GREEN);
                     error2 = "*Usuario cedula incorrecto<br>";
                 }
-                if(respuesta.charAt(i) == 'm' || respuesta.charAt(i) == 'o'){
+                if(respuesta.charAt(i) == 'm'){
                     this.mc.colorTextFieldJ(this.txtUsuario, Color.RED,Color.GREEN);
                     this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED,Color.GREEN);
-                    error3 = "*Correo electronico incorrecto<br>";
+                    error3 = "*Formato de usuario no valido<br>";
+                }
+                if(respuesta.charAt(i) == 'o'){
+                    this.mc.colorTextFieldJ(this.txtUsuario, Color.RED,Color.GREEN);
+                    this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED,Color.GREEN);
+                    error4 = "*Correo electronico incorrecto<br>";
                 }
                 if(respuesta.charAt(i) == 'p'){
                     this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED,Color.GREEN);
-                    error4 = "*Contraseña incorrecta";
+                    error5 = "*Contraseña incorrecta";
                 }
             }
-            this.lblMensajeErrores.setText("<html>"+error1+error2+error3+error4+"</html>");
+            this.lblMensajeErroresLogin.setText("<html>"+error1+error2+error3+error4+error5+"</html>");
             return;
         }
         if(this.ap.intentarIngresar(this.txtUsuario.getText().trim(), this.mc.claveToString(this.txtContrasenia))){
             JOptionPane.showMessageDialog(this, "Ingresaste correctamente");
         }else{
-            this.lblMensajeErrores.setText("Usuario y/o contraseña incorrecta");
+            this.lblMensajeErroresLogin.setText("Usuario y/o contraseña incorrecta");
         }
     }//GEN-LAST:event_btnIniciarSesionMouseClicked
 
-    private void btnRegistrarmeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarmeMouseClicked
-        if(this.pnlDerechaRegistro.isVisible()){
-            this.pnlDerechaRegistro.setVisible(false);
-        }else{
-            this.pnlDerechaRegistro.setVisible(true);
-        }
-    }//GEN-LAST:event_btnRegistrarmeMouseClicked
+    private void txtCedRegisterKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedRegisterKeyTyped
+        this.lblMensajeErroresRegistro.setText("");
+    }//GEN-LAST:event_txtCedRegisterKeyTyped
 
-    private void txtUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyTyped
-        this.lblMensajeErrores.setText("");
-    }//GEN-LAST:event_txtUsuarioKeyTyped
+    private void txtMailRegisterKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMailRegisterKeyTyped
+        this.lblMensajeErroresRegistro.setText("");
+    }//GEN-LAST:event_txtMailRegisterKeyTyped
 
-    private void txtContraseniaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContraseniaKeyTyped
-        this.lblMensajeErrores.setText("");
-    }//GEN-LAST:event_txtContraseniaKeyTyped
-
+    private void txtContraseniaResgisterKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContraseniaResgisterKeyTyped
+        this.lblMensajeErroresRegistro.setText("");
+    }//GEN-LAST:event_txtContraseniaResgisterKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnCerrar;
     private javax.swing.JButton btnIniciarSesion;
     private javax.swing.JLabel btnMinimizar;
-    private javax.swing.JLabel btnRegistrarme;
+    private javax.swing.JLabel btnMostrarRegistro;
+    private javax.swing.JButton btnRegistrarme;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel lblMensajeErrores;
+    private javax.swing.JLabel lblMensajeErroresLogin;
+    private javax.swing.JLabel lblMensajeErroresRegistro;
     private javax.swing.JLabel lblXD;
     private javax.swing.JLabel lblXD1;
     private javax.swing.JLabel lblXD2;

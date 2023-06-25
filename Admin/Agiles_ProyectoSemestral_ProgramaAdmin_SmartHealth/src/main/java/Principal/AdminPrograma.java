@@ -28,16 +28,16 @@ public class AdminPrograma {
             if (!this.ctrCedula(user)) {
                 resultado += "c";
             } else {
-                if (this.mfb.verificarCampoExistente("Admin", "CED_ADM", user)) {
+                if (!this.mfb.verificarCampoExistente("Admin", "CED_ADM", user)) {
                     resultado += "d";
                 }
             }
         }
         if (puerta.equals("texto")) {
-            if (!this.compMail(user)) {
+            if (!this.compMail(this.mailToLowercase(user))) {
                 resultado += "m";
             } else {
-                if (!this.mfb.verificarCampoExistente("Admin", "MAIL_ADM", user.toLowerCase())) {
+                if (!this.mfb.verificarCampoExistente("Admin", "MAIL_ADM", this.mailToLowercase(user))) {
                     resultado += "o";
                 }
             }
@@ -49,14 +49,41 @@ public class AdminPrograma {
 
         return resultado;
     }
-    
 
-    public boolean intentarIngresar(String user, String pass) {
-        return this.mfb.iniciarSesion(user, this.en.Encriptar(pass));
+    public String compRegistro(String ced, String mail, String clave) {
+        String resultado = "";
+
+        if (!this.ctrCedula(ced)) {
+            resultado += "c";
+        } else {
+            if (this.mfb.verificarCampoExistente("Admin", "CED_ADM", ced)) {
+                resultado += "d";
+            }
+        }
+        if (!this.compMail(this.mailToLowercase(mail))) {
+            resultado += "m";
+        } else {
+            if (this.mfb.verificarCampoExistente("Admin", "MAIL_ADM", this.mailToLowercase(mail))) {
+                resultado += "o";
+            }
+        }
+        if (clave.isBlank()) {
+            resultado += "p";
+        }
+
+        return resultado;
     }
 
-// <editor-fold defaultstate="collapsed" desc=" look and feel "> 
-    public boolean ctrCedula(String ced) {
+    public boolean intentarIngresar(String user, String pass) {
+        return this.mfb.iniciarSesion(this.mailToLowercase(user), this.en.Encriptar(pass));
+    }
+    
+    public boolean intentarRegistrar(String ced, String mail, String clave){
+        return this.mfb.RegistrarAdmin(ced, this.mailToLowercase(mail), clave);
+    }
+
+// <editor-fold defaultstate="collapsed" desc=" metodos complementarios "> 
+    private boolean ctrCedula(String ced) {
         int a, e, i, o, cont, j, u = 0, y = 0, r = 0, s = 0;
         double z = 0, k = 100000000;
         String ced1 = null;
@@ -109,14 +136,29 @@ public class AdminPrograma {
         return false;
     }
 
-    public static boolean compMail(String email) {
+    private static boolean compMail(String email) {
         String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]+$";
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         Matcher matcher = pattern.matcher(email);
-        if(matcher.matches()){
+        if (matcher.matches()) {
+            System.out.println("mail valido");
             return true;
         }
+        System.out.println("mail no valido");
         return false;
+    }
+    
+    private String mailToLowercase(String mail){
+        String newMail = "";
+        
+        for(int i=0; i<mail.length(); i++){
+            if(Character.isAlphabetic(mail.charAt(i))){
+                newMail = newMail + Character.toLowerCase(mail.charAt(i));
+            }else{
+                newMail = newMail + mail.charAt(i);
+            }
+        }
+        return newMail;
     }
 // </editor-fold>   
 }
