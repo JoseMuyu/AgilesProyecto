@@ -36,7 +36,7 @@ public class Coneccion {
     public Firestore getBd() {
         return this.bd;
     }
-    // </editor-fold>
+// </editor-fold>
 
     private void conectarFB() {
         try {
