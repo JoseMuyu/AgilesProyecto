@@ -141,10 +141,8 @@ public class AdminPrograma {
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
-            System.out.println("mail valido");
             return true;
         }
-        System.out.println("mail no valido");
         return false;
     }
     

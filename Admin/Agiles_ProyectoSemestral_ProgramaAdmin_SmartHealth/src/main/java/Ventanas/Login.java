@@ -6,15 +6,16 @@ import Complementos.ManejoComponentes;
 import Principal.AdminPrograma;
 import java.awt.Color;
 import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
 
 public class Login extends javax.swing.JFrame {
     AdminPrograma ap = new AdminPrograma();
     ManejoComponentes mc = new ManejoComponentes();
+    VentanaProcesos vp = new VentanaProcesos();
     public Login() {
         this.initFrontend();
     }
 // METODOS ---------------------------------------------------------------------
-// <editor-fold defaultstate="collapsed" desc=" METODOS INICIADORES "> 
     public void initFrontend(){
         lookAndFeel(); /* Set the Nimbus look and feel */
         initComponents();
@@ -24,8 +25,30 @@ public class Login extends javax.swing.JFrame {
         this.mc.crearBoton(this.btnMostrarRegistro, "", "");
         this.txtContrasenia.setEchoChar('\u2022');
         this.pnlDerechaRegistro.setVisible(false);
+        this.mc.crearlabel(this.lblFondo2, "fondoLogin.png");
+        
+        this.vp.btnCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCerrarSesionMouseClicked(evt);
+            }
+        });
     }
-// </editor-fold>
+    
+    public void limpiarVentana(){
+        this.txtUsuario.setText("");
+        this.txtContrasenia.setText("");
+        this.txtCedRegister.setText("");
+        this.txtContraseniaResgister.setText("");
+        this.txtMailRegister.setText("");
+        this.pnlDerechaRegistro.setVisible(false);
+        this.txtUsuario.setBorder(new LineBorder(new Color(153,255,153), 3));
+        this.txtContrasenia.setBorder(new LineBorder(new Color(153,255,153), 3));
+        this.txtCedRegister.setBorder(new LineBorder(new Color(153,255,153), 3));
+        this.txtContraseniaResgister.setBorder(new LineBorder(new Color(153,255,153), 3));
+        this.txtMailRegister.setBorder(new LineBorder(new Color(153,255,153), 3));
+        this.pnlDerechaRegistro.setBorder(new LineBorder(new Color(153,255,153), 3));
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -43,6 +66,7 @@ public class Login extends javax.swing.JFrame {
         lblXD4 = new javax.swing.JLabel();
         btnRegistrarme = new javax.swing.JButton();
         lblMensajeErroresRegistro = new javax.swing.JLabel();
+        lblFondo2 = new javax.swing.JLabel();
         lblXD2 = new javax.swing.JLabel();
         btnMostrarRegistro = new javax.swing.JLabel();
         txtContrasenia = new javax.swing.JPasswordField();
@@ -147,6 +171,9 @@ public class Login extends javax.swing.JFrame {
         pnlDerechaRegistro.add(lblMensajeErroresRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 370, 250, -1));
 
         pnlPrincipal.add(pnlDerechaRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 370, 550));
+
+        lblFondo2.setText("jLabel2");
+        pnlPrincipal.add(lblFondo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 370, 550));
 
         lblXD2.setFont(new java.awt.Font("Trebuchet MS", 0, 13)); // NOI18N
         lblXD2.setForeground(new java.awt.Color(51, 51, 51));
@@ -271,9 +298,9 @@ public class Login extends javax.swing.JFrame {
             return;
         }
         if(this.ap.intentarRegistrar(this.txtCedRegister.getText().trim(), this.txtMailRegister.getText().trim(), this.txtContraseniaResgister.getText().trim())){
-            JOptionPane.showMessageDialog(this, "Se registro correctamente");
+            JOptionPane.showMessageDialog(this, "Nuevo admin registrado correctamente");
         }else{
-            JOptionPane.showMessageDialog(this, "No se registro");
+            JOptionPane.showMessageDialog(this, "No se registro el nuevo admin");
         }
     }//GEN-LAST:event_btnRegistrarmeMouseClicked
 
@@ -330,9 +357,10 @@ public class Login extends javax.swing.JFrame {
             return;
         }
         if(this.ap.intentarIngresar(this.txtUsuario.getText().trim(), this.mc.claveToString(this.txtContrasenia))){
-            JOptionPane.showMessageDialog(this, "Ingresaste correctamente");
-        }else{
-            this.lblMensajeErroresLogin.setText("Usuario y/o contraseña incorrecta");
+            String userName = this.txtUsuario.getText().trim();
+            this.limpiarVentana();
+            dispose();
+            this.vp.lanzarVentana(userName);
         }
     }//GEN-LAST:event_btnIniciarSesionMouseClicked
 
@@ -348,6 +376,11 @@ public class Login extends javax.swing.JFrame {
         this.lblMensajeErroresRegistro.setText("");
     }//GEN-LAST:event_txtContraseniaResgisterKeyTyped
 
+    private void btnCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {                                             
+        this.vp.dispose();
+        this.setVisible(true);
+    }   
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnCerrar;
     private javax.swing.JButton btnIniciarSesion;
@@ -356,6 +389,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton btnRegistrarme;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblFondo2;
     private javax.swing.JLabel lblMensajeErroresLogin;
     private javax.swing.JLabel lblMensajeErroresRegistro;
     private javax.swing.JLabel lblXD;
