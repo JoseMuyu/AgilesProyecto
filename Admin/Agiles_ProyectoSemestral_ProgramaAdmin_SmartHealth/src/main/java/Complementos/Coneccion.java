@@ -11,13 +11,34 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Coneccion {
-    public Firestore bd;
     
-    public Coneccion(){
+    private Firestore bd;
+
+// <editor-fold defaultstate="collapsed" desc=" Codigo iniciador "> 
+    /*
+    Inicializa un objeto Conexion dentro del mismo para utilizar uno y solo uno
+    durante toda la ejecucion del programa
+     */
+    private static Coneccion conex;
+
+    private Coneccion() {
         this.conectarFB();
     }
+    static {
+        conex = new Coneccion();
+    }
+    public static Coneccion cargarConexion() {
+        return conex;
+    }
+    private void setBd(Firestore bd) {
+        this.bd = bd;
+    }
+    public Firestore getBd() {
+        return this.bd;
+    }
+    // </editor-fold>
 
-    public void conectarFB() {
+    private void conectarFB() {
         try {
             FileInputStream sa = new FileInputStream("fileConection.json");
 
@@ -28,10 +49,10 @@ public class Coneccion {
 
             FirebaseApp.initializeApp(options);
             this.setBd(FirestoreClient.getFirestore());
-            if(this.getBd() != null){
-                System.out.println("_Conectado a FireBase. . .");
-            }else{
-                System.out.println("_No conectado a FireBase. . .");
+            if (this.getBd() != null) {
+                System.out.println("Conectado a FireBase. . .");
+            } else {
+                System.out.println("No conectado a FireBase. . .");
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error archivo no encontrado\nen el metodo conectarFD\n" + e);
@@ -40,10 +61,4 @@ public class Coneccion {
         }
     }
 
-    public void setBd(Firestore bd) {
-        this.bd = bd;
-    }
-    public Firestore getBd() {
-        return this.bd;
-    }
 }
