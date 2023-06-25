@@ -43,6 +43,7 @@ public class ManejoComponentes {
     
     public void colorTextFieldJ(JTextField txt, Color colorBad, Color colorGod){
         txt.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 if(colorGod.equals(Color.GREEN)){
                     txt.setBorder(new LineBorder(new Color(153,255,153), 3));

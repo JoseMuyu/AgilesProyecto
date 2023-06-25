@@ -1,32 +1,40 @@
 package Ventanas;
 
 // Made by JosliBlue
-
 import Complementos.ManejoComponentes;
 import Principal.AdminPrograma;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
 public class Login extends javax.swing.JFrame {
+
     AdminPrograma ap = new AdminPrograma();
     ManejoComponentes mc = new ManejoComponentes();
     VentanaProcesos vp = new VentanaProcesos();
+
     public Login() {
         this.initFrontend();
     }
 // METODOS ---------------------------------------------------------------------
-    public void initFrontend(){
-        lookAndFeel(); /* Set the Nimbus look and feel */
+
+    public void initFrontend() {
+        lookAndFeel();
+        /* Set the Nimbus look and feel */
         initComponents();
         setLocationRelativeTo(null);
+        Image img = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\Imagenes\\logo_App.png");
+        this.setIconImage(img);
+        this.mc.crearlabel(this.lblLogo, "logo_App.png");
         this.mc.crearBoton(this.btnCerrar, "ico_cerrar.png", "ico_cerrar_hover.png");
         this.mc.crearBoton(this.btnMinimizar, "ico_minimizar.png", "ico_minimizar_hover.png");
         this.mc.crearBoton(this.btnMostrarRegistro, "", "");
         this.txtContrasenia.setEchoChar('\u2022');
         this.pnlDerechaRegistro.setVisible(false);
         this.mc.crearlabel(this.lblFondo2, "fondoLogin.png");
-        
+
         this.vp.btnCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -34,21 +42,22 @@ public class Login extends javax.swing.JFrame {
             }
         });
     }
-    
-    public void limpiarVentana(){
+
+    public void limpiarVentana() {
         this.txtUsuario.setText("");
         this.txtContrasenia.setText("");
         this.txtCedRegister.setText("");
         this.txtContraseniaResgister.setText("");
         this.txtMailRegister.setText("");
         this.pnlDerechaRegistro.setVisible(false);
-        this.txtUsuario.setBorder(new LineBorder(new Color(153,255,153), 3));
-        this.txtContrasenia.setBorder(new LineBorder(new Color(153,255,153), 3));
-        this.txtCedRegister.setBorder(new LineBorder(new Color(153,255,153), 3));
-        this.txtContraseniaResgister.setBorder(new LineBorder(new Color(153,255,153), 3));
-        this.txtMailRegister.setBorder(new LineBorder(new Color(153,255,153), 3));
-        this.pnlDerechaRegistro.setBorder(new LineBorder(new Color(153,255,153), 3));
+        this.txtUsuario.setBorder(new LineBorder(new Color(153, 255, 153), 3));
+        this.txtContrasenia.setBorder(new LineBorder(new Color(153, 255, 153), 3));
+        this.txtCedRegister.setBorder(new LineBorder(new Color(153, 255, 153), 3));
+        this.txtContraseniaResgister.setBorder(new LineBorder(new Color(153, 255, 153), 3));
+        this.txtMailRegister.setBorder(new LineBorder(new Color(153, 255, 153), 3));
+        this.pnlDerechaRegistro.setBorder(new LineBorder(new Color(153, 255, 153), 3));
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -66,6 +75,7 @@ public class Login extends javax.swing.JFrame {
         lblXD4 = new javax.swing.JLabel();
         btnRegistrarme = new javax.swing.JButton();
         lblMensajeErroresRegistro = new javax.swing.JLabel();
+        lblLogo = new javax.swing.JLabel();
         lblFondo2 = new javax.swing.JLabel();
         lblXD2 = new javax.swing.JLabel();
         btnMostrarRegistro = new javax.swing.JLabel();
@@ -172,6 +182,9 @@ public class Login extends javax.swing.JFrame {
 
         pnlPrincipal.add(pnlDerechaRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 370, 550));
 
+        lblLogo.setText("jLabel2");
+        pnlPrincipal.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(435, 130, 200, 200));
+
         lblFondo2.setText("jLabel2");
         pnlPrincipal.add(lblFondo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 370, 550));
 
@@ -266,48 +279,48 @@ public class Login extends javax.swing.JFrame {
 
     private void btnRegistrarmeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarmeMouseClicked
         String resultado = this.ap.compRegistro(this.txtCedRegister.getText().trim(), this.txtMailRegister.getText().trim(), this.txtContraseniaResgister.getText().trim());
-        if(!resultado.isBlank()){
+        if (!resultado.isBlank()) {
             String error1 = "";
             String error2 = "";
             String error3 = "";
             String error4 = "";
             String error5 = "";
-            for(int i=0; i<resultado.length(); i++){
-                if(resultado.charAt(i) == 'c'){
+            for (int i = 0; i < resultado.length(); i++) {
+                if (resultado.charAt(i) == 'c') {
                     error1 = "*Formato cedula no valida<br>";
                     this.mc.colorTextFieldJ(this.txtCedRegister, Color.RED, Color.GREEN);
                 }
-                if(resultado.charAt(i) == 'd'){
+                if (resultado.charAt(i) == 'd') {
                     error2 = "*Cedula ya existente<br>";
                     this.mc.colorTextFieldJ(this.txtCedRegister, Color.RED, Color.GREEN);
                 }
-                if(resultado.charAt(i) == 'm'){
+                if (resultado.charAt(i) == 'm') {
                     error3 = "*Formato correo no valido<br>";
                     this.mc.colorTextFieldJ(this.txtMailRegister, Color.RED, Color.GREEN);
                 }
-                if(resultado.charAt(i) == 'o'){
+                if (resultado.charAt(i) == 'o') {
                     error4 = "*Correo ya existente<br>";
                     this.mc.colorTextFieldJ(this.txtMailRegister, Color.RED, Color.GREEN);
                 }
-                if(resultado.charAt(i) == 'p'){
+                if (resultado.charAt(i) == 'p') {
                     error5 = "*Contraseña no valida<br>";
                     this.mc.colorTextFieldJ(this.txtMailRegister, Color.RED, Color.GREEN);
                 }
             }
-            this.lblMensajeErroresRegistro.setText("<html>"+error1+error2+error3+error4+error5+"</html>");
+            this.lblMensajeErroresRegistro.setText("<html>" + error1 + error2 + error3 + error4 + error5 + "</html>");
             return;
         }
-        if(this.ap.intentarRegistrar(this.txtCedRegister.getText().trim(), this.txtMailRegister.getText().trim(), this.txtContraseniaResgister.getText().trim())){
+        if (this.ap.intentarRegistrar(this.txtCedRegister.getText().trim(), this.txtMailRegister.getText().trim(), this.txtContraseniaResgister.getText().trim())) {
             JOptionPane.showMessageDialog(this, "Nuevo admin registrado correctamente");
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "No se registro el nuevo admin");
         }
     }//GEN-LAST:event_btnRegistrarmeMouseClicked
 
     private void btnMostrarRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMostrarRegistroMouseClicked
-        if(this.pnlDerechaRegistro.isVisible()){
+        if (this.pnlDerechaRegistro.isVisible()) {
             this.pnlDerechaRegistro.setVisible(false);
-        }else{
+        } else {
             this.pnlDerechaRegistro.setVisible(true);
         }
     }//GEN-LAST:event_btnMostrarRegistroMouseClicked
@@ -322,41 +335,41 @@ public class Login extends javax.swing.JFrame {
 
     private void btnIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseClicked
         String respuesta = this.ap.compLogin(this.txtUsuario.getText().trim(), this.mc.claveToString(this.txtContrasenia));
-        if(!respuesta.isBlank()){
+        if (!respuesta.isBlank()) {
             String error1 = "";
             String error2 = "";
             String error3 = "";
             String error4 = "";
             String error5 = "";
-            for(int i=0; i<respuesta.length(); i++){
-                if(respuesta.charAt(i) == 'b'){
-                    this.mc.colorTextFieldJ(this.txtUsuario, Color.RED,Color.GREEN);
+            for (int i = 0; i < respuesta.length(); i++) {
+                if (respuesta.charAt(i) == 'b') {
+                    this.mc.colorTextFieldJ(this.txtUsuario, Color.RED, Color.GREEN);
                     error1 = "*Campo vacio<br>";
                 }
-                if(respuesta.charAt(i) == 'c' || respuesta.charAt(i) == 'd'){
-                    this.mc.colorTextFieldJ(this.txtUsuario, Color.RED,Color.GREEN);
-                    this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED,Color.GREEN);
+                if (respuesta.charAt(i) == 'c' || respuesta.charAt(i) == 'd') {
+                    this.mc.colorTextFieldJ(this.txtUsuario, Color.RED, Color.GREEN);
+                    this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED, Color.GREEN);
                     error2 = "*Usuario cedula incorrecto<br>";
                 }
-                if(respuesta.charAt(i) == 'm'){
-                    this.mc.colorTextFieldJ(this.txtUsuario, Color.RED,Color.GREEN);
-                    this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED,Color.GREEN);
+                if (respuesta.charAt(i) == 'm') {
+                    this.mc.colorTextFieldJ(this.txtUsuario, Color.RED, Color.GREEN);
+                    this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED, Color.GREEN);
                     error3 = "*Formato de usuario no valido<br>";
                 }
-                if(respuesta.charAt(i) == 'o'){
-                    this.mc.colorTextFieldJ(this.txtUsuario, Color.RED,Color.GREEN);
-                    this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED,Color.GREEN);
+                if (respuesta.charAt(i) == 'o') {
+                    this.mc.colorTextFieldJ(this.txtUsuario, Color.RED, Color.GREEN);
+                    this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED, Color.GREEN);
                     error4 = "*Correo electronico incorrecto<br>";
                 }
-                if(respuesta.charAt(i) == 'p'){
-                    this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED,Color.GREEN);
+                if (respuesta.charAt(i) == 'p') {
+                    this.mc.colorTextFieldJ(this.txtContrasenia, Color.RED, Color.GREEN);
                     error5 = "*Contraseña incorrecta";
                 }
             }
-            this.lblMensajeErroresLogin.setText("<html>"+error1+error2+error3+error4+error5+"</html>");
+            this.lblMensajeErroresLogin.setText("<html>" + error1 + error2 + error3 + error4 + error5 + "</html>");
             return;
         }
-        if(this.ap.intentarIngresar(this.txtUsuario.getText().trim(), this.mc.claveToString(this.txtContrasenia))){
+        if (this.ap.intentarIngresar(this.txtUsuario.getText().trim(), this.mc.claveToString(this.txtContrasenia))) {
             String userName = this.txtUsuario.getText().trim();
             this.limpiarVentana();
             dispose();
@@ -376,11 +389,11 @@ public class Login extends javax.swing.JFrame {
         this.lblMensajeErroresRegistro.setText("");
     }//GEN-LAST:event_txtContraseniaResgisterKeyTyped
 
-    private void btnCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {                                             
+    private void btnCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {
         this.vp.dispose();
         this.setVisible(true);
-    }   
-    
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnCerrar;
     private javax.swing.JButton btnIniciarSesion;
@@ -390,6 +403,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblFondo2;
+    private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblMensajeErroresLogin;
     private javax.swing.JLabel lblMensajeErroresRegistro;
     private javax.swing.JLabel lblXD;
@@ -406,9 +420,8 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 
-
 // <editor-fold defaultstate="collapsed" desc=" look and feel "> 
-    public static void lookAndFeel(){
+    public static void lookAndFeel() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

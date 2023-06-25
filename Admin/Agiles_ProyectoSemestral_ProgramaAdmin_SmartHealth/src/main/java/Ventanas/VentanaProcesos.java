@@ -1,12 +1,14 @@
 package Ventanas;
 
 // Made by JosliBlue
-
 import Complementos.ManejoComponentes;
 import Principal.AdminPrograma;
-import static Ventanas.Login.lookAndFeel;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 
 public class VentanaProcesos extends javax.swing.JFrame {
+
     AdminPrograma ap = new AdminPrograma();
     ManejoComponentes mc = new ManejoComponentes();
 
@@ -14,18 +16,24 @@ public class VentanaProcesos extends javax.swing.JFrame {
         this.initFrontend();
     }
 // METODOS ---------------------------------------------------------------------
-    public void initFrontend(){
-        lookAndFeel(); /* Set the Nimbus look and feel */
+
+    public void initFrontend() {
+        lookAndFeel();
+        /* Set the Nimbus look and feel */
         initComponents();
         setLocationRelativeTo(null);
+        Image img = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\Imagenes\\logo_App.png");
+        this.setIconImage(img);
         this.mc.crearBoton(this.btnCerrar, "ico_cerrar.png", "ico_cerrar_hover.png");
         this.mc.crearBoton(this.btnMinimizar, "ico_minimizar.png", "ico_minimizar_hover.png");
         this.mc.crearBoton(this.btnCerrarSesion, "ico_cerrar.png", "ico_cerrarSesion_hover.png");
     }
-    public void lanzarVentana(String userName){
+
+    public void lanzarVentana(String userName) {
         this.lblUserNameGeneral.setText(userName);
         setVisible(true);
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -35,7 +43,7 @@ public class VentanaProcesos extends javax.swing.JFrame {
         lblUserNameGeneral = new javax.swing.JLabel();
         btnCerrar = new javax.swing.JLabel();
         btnMinimizar = new javax.swing.JLabel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tbdPrincipal = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -76,9 +84,9 @@ public class VentanaProcesos extends javax.swing.JFrame {
             .addGap(0, 552, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab1", jPanel1);
+        tbdPrincipal.addTab("tab1", jPanel1);
 
-        pnlBase.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 7, 900, 583));
+        pnlBase.add(tbdPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 7, 900, 583));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,7 +103,7 @@ public class VentanaProcesos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 // EVENTOS ---------------------------------------------------------------------
-    
+
     private void btnCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCerrarMouseClicked
         dispose();
         System.exit(0);
@@ -110,14 +118,13 @@ public class VentanaProcesos extends javax.swing.JFrame {
     public javax.swing.JLabel btnCerrarSesion;
     private javax.swing.JLabel btnMinimizar;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblUserNameGeneral;
     private javax.swing.JPanel pnlBase;
+    private javax.swing.JTabbedPane tbdPrincipal;
     // End of variables declaration//GEN-END:variables
 
-
 // <editor-fold defaultstate="collapsed" desc=" look and feel "> 
-    public static void lookAndFeel(){
+    public static void lookAndFeel() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
