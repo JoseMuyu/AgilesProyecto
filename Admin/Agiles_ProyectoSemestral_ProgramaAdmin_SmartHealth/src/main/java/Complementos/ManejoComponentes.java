@@ -17,10 +17,14 @@ import javax.swing.table.DefaultTableModel;
 public class ManejoComponentes {
 
     private final String rutaImagenes = "src\\main\\java\\Imagenes\\";
+    private final String rutaImgs = "src\\main\\java\\Imgs\\";
 
 // <editor-fold defaultstate="collapsed" desc=" METODOS PARA LABELS ">
     public void crearlabel(JLabel label, String nombreImg) {
         rsscalelabel.RSScaleLabel.setScaleLabel(label, this.rutaImagenes + nombreImg);
+    }
+    public void crearPintura(JLabel label, String nombreImg) {
+        rsscalelabel.RSScaleLabel.setScaleLabel(label, this.rutaImgs + nombreImg);
     }
 
     public void crearBoton(JLabel label, String nombreImg, String nombreImgHover) {
@@ -39,6 +43,8 @@ public class ManejoComponentes {
             }
         });
     }
+    
+    
 // </editor-fold>
 
     public String claveToString(JPasswordField p) {
