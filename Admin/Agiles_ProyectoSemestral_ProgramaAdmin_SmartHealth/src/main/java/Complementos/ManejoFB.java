@@ -6,6 +6,8 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.WriteResult;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,8 @@ import javax.swing.JOptionPane;
 public class ManejoFB {
 
     Coneccion cn = Coneccion.cargarConexion();
-
+    
+// <editor-fold defaultstate="collapsed" desc=" METODOS VENTANA LOGIN ">
     public boolean iniciarSesion(String user, String pass) {
         try {
             CollectionReference adminCollection = cn.getBd().collection("Admin");
@@ -40,24 +43,6 @@ public class ManejoFB {
         return false;
     }
 
-    public boolean verificarCampoExistente(String nombreColeccion, String nombreCampo, Object datoCampo) {
-        CollectionReference coleccion = cn.getBd().collection(nombreColeccion);
-
-        // Construye la consulta para buscar documentos con el campo y valor especificados
-        Query consulta = coleccion.whereEqualTo(nombreCampo, datoCampo).limit(1);
-
-        try {
-            // Ejecuta la consulta y obtiene los documentos que cumplen la condición
-            List<QueryDocumentSnapshot> documentos = consulta.get().get().getDocuments();
-
-            // Verifica si se encontraron documentos
-            return !documentos.isEmpty();
-        } catch (Exception e) {
-            // Manejo de errores
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     public boolean RegistrarAdmin(String ced, String mail, String clave) {
         CollectionReference coleccion = cn.getBd().collection("Admin");
@@ -78,5 +63,77 @@ public class ManejoFB {
             System.out.println("Error al insertar el documento: " + e.getMessage());
         }
         return false;
+    }
+// </editor-fold> 
+    
+// <editor-fold defaultstate="collapsed" desc=" METODOS PESTANIA ALIMENTOS ">
+// </editor-fold> 
+    
+    public void guardarRegistro(String coleccion, String documento, Map<String, Object> data){
+        try{
+            DocumentReference docRef = cn.getBd().collection(coleccion).document(documento);
+            ApiFuture<WriteResult> result = docRef.set(data);
+            if(result.isDone()){
+                JOptionPane.showMessageDialog(null, "Registro agregado con exito");
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error guardarAlimento(ManejoFB) \n"+e);
+        }
+    }
+    
+    public boolean verificarCampoExistente(String nombreColeccion, String nombreCampo, Object datoCampo) {
+        CollectionReference coleccion = cn.getBd().collection(nombreColeccion);
+
+        // Construye la consulta para buscar documentos con el campo y valor especificados
+        Query consulta = coleccion.whereEqualTo(nombreCampo, datoCampo).limit(1);
+
+        try {
+            // Ejecuta la consulta y obtiene los documentos que cumplen la condición
+            List<QueryDocumentSnapshot> documentos = consulta.get().get().getDocuments();
+
+            // Verifica si se encontraron documentos
+            return !documentos.isEmpty();
+        } catch (Exception e) {
+            // Manejo de errores
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public Object[] obtenerDatos(String nomCollection, String nombreColumna) {
+        try {
+            CollectionReference coleccion = cn.getBd().collection(nomCollection);
+            ApiFuture<QuerySnapshot> querySnap = coleccion.get();
+            QuerySnapshot querySnapshot = querySnap.get();
+
+            // Crear arreglo para almacenar los valores de la columna
+            Object[] valoresColumna = new Object[querySnapshot.size()];
+
+            // Iterar sobre los documentos
+            int i = 0;
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                // Obtener el valor de la columna específica
+                Object columnaValue;
+                if(nombreColumna.equalsIgnoreCase("ID")){
+                    columnaValue = document.getId();
+                }else{
+                    columnaValue = document.get(nombreColumna);
+                }
+
+                // Agregar el valor al arreglo
+                if (columnaValue != null) {
+                    valoresColumna[i] = columnaValue;
+                } else {
+                    valoresColumna[i] = ""; // Agregar un valor vacío si la columna es null
+                }
+                i++;
+            }
+
+            return valoresColumna;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al obtener datos de la columna (ManejoFB)\n" + e);
+        }
+
+        return null; // Si ocurre un error, devolvemos un arreglo vacío
     }
 }

@@ -2,6 +2,8 @@ package Principal;
 
 // Made by JosliBlue
 import Complementos.*;
+import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,10 +16,6 @@ public class AdminPrograma {
         String resultado = "";
         String puerta = "";
 
-        if (user.isBlank()) {
-            resultado += "b";
-            return resultado;
-        }
         try {
             int number = Integer.valueOf(user);
             puerta = "number";
@@ -79,8 +77,33 @@ public class AdminPrograma {
     }
     
     public boolean intentarRegistrar(String ced, String mail, String clave){
-        return this.mfb.RegistrarAdmin(ced, this.mailToLowercase(mail), clave);
+        return this.mfb.RegistrarAdmin(ced, this.mailToLowercase(mail), this.en.Encriptar(clave));
     }
+    
+    public Object[] obtenerDatos(String nomCollection, String nombreColumna){
+        return this.mfb.obtenerDatos(nomCollection,nombreColumna);
+    }
+    
+// <editor-fold defaultstate="collapsed" desc=" metodos pestania alimentos "> 
+    public String compAlimento(String nombre, double numCal){
+        String respuesta = "";
+        if(nombre.isBlank()){
+            respuesta+= "n";
+        }
+        if(numCal <= 0){
+            respuesta+= "c";
+        }
+        return respuesta;
+    }
+    
+    public void guardarAlimento(String coleccion, Map<String, Object> data){
+        String cod = this.generarCadenaAleatoria(20);
+        this.mfb.guardarRegistro(coleccion, cod, data);
+    }
+    public void actualizarAlimento(String coleccion, String documento, Map<String, Object> data){
+        this.mfb.guardarRegistro(coleccion, documento, data);
+    }
+// </editor-fold> 
 
 // <editor-fold defaultstate="collapsed" desc=" metodos complementarios "> 
     private boolean ctrCedula(String ced) {
@@ -158,5 +181,19 @@ public class AdminPrograma {
         }
         return newMail;
     }
-// </editor-fold>   
+    
+    public String generarCadenaAleatoria(int longitud) {
+        String CARACTERES_PERMITIDOS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(longitud);
+
+        for (int i = 0; i < longitud; i++) {
+            int indice = random.nextInt(CARACTERES_PERMITIDOS.length());
+            char caracter = CARACTERES_PERMITIDOS.charAt(indice);
+            sb.append(caracter);
+        }
+
+        return sb.toString();
+    }
+// </editor-fold> 
 }

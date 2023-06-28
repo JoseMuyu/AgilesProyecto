@@ -3,25 +3,36 @@ package Ventanas;
 // Made by JosliBlue
 import Complementos.ManejoComponentes;
 import Principal.AdminPrograma;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
-import javax.swing.ImageIcon;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class VentanaProcesos extends javax.swing.JFrame {
 
     AdminPrograma ap = new AdminPrograma();
     ManejoComponentes mc = new ManejoComponentes();
+    
+    // variable pestania GestionarAlimentos
+    Object[] GA_codigo, GA_nombre, GA_calorias, GA_tipo, GA_estado;
+    String[] GA_tblModelTitulos = {"NOMBRE","CALORIAS","TIPO","ESTADO"};
+    DefaultTableModel GA_tblModel = new DefaultTableModel(this.GA_tblModelTitulos,0);
+    String[] GA_cmbModelTitulos = {"VERDURA", "FRUTA", "GRANO","LEGUMBRE","PROTEINA"};
+    DefaultComboBoxModel<String> GA_cmbModel = new DefaultComboBoxModel<>(this.GA_cmbModelTitulos);
 
     public VentanaProcesos() {
         this.initFrontend();
     }
 // METODOS ---------------------------------------------------------------------
-
     public void initFrontend() {
         lookAndFeel();
-        /* Set the Nimbus look and feel */
         initComponents();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(this);
         Image img = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\Imagenes\\logo_App.png");
         this.setIconImage(img);
         this.mc.crearBoton(this.btnCerrar, "ico_cerrar.png", "ico_cerrar_hover.png");
@@ -31,22 +42,86 @@ public class VentanaProcesos extends javax.swing.JFrame {
 
     public void lanzarVentana(String userName) {
         this.lblUserNameGeneral.setText(userName);
+        
+        this.cargarDatosAlimentos();
+        
         setVisible(true);
     }
 
+// <editor-fold defaultstate="collapsed" desc=" metodos pestania Gestionar Alimentos ">
+    public void cargarDatosAlimentos(){
+        this.mc.limpiarTabla(this.tbl_GA_alimentos, this.GA_tblModel);
+        
+        this.GA_codigo = this.ap.obtenerDatos("Alimentos", "ID");
+        this.GA_nombre = this.ap.obtenerDatos("Alimentos", "NOM_ALI");
+        this.GA_calorias = this.ap.obtenerDatos("Alimentos", "NUM_CAL_ALI");
+        this.GA_tipo = this.ap.obtenerDatos("Alimentos", "TIP_ALI");
+        this.GA_estado = this.ap.obtenerDatos("Alimentos", "EST_ALI");
+        
+        for(int i=0; i<this.GA_codigo.length; i++){
+            String estado = "";
+            if(this.GA_estado[i].equals(true)){
+                estado = "Habilitado";
+            }else{
+                estado = "Deshabilitado";
+            }
+            String[] fila = {this.GA_nombre[i].toString(),
+                        this.GA_calorias[i].toString(),
+                        this.GA_tipo[i].toString(),
+                        estado};
+            this.GA_tblModel.addRow(fila);
+        }
+    }
+    public void limpiarAlimentos(){
+        this.btn_GA_guardar.setEnabled(true);
+        this.btn_GA_actualizar.setEnabled(false);
+        this.txt_GA_codigo.setText("");
+        this.mc.defaultColorTxt(this.txt_GA_codigo);
+        this.txt_GA_nombre.setText("");
+        this.mc.defaultColorTxt(this.txt_GA_nombre);
+        this.txt_GA_nombre.setBorder(new LineBorder(Color.WHITE));
+        this.txt_GA_numCal.setText("");
+        this.mc.defaultColorTxt(this.txt_GA_numCal);
+        this.txt_GA_numCal.setBorder(new LineBorder(Color.WHITE));
+        this.chk_GA_activo.setSelected(true);
+        this.cmb_GA_tipos.setSelectedIndex(0);
+    }
+// </editor-fold>   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        grpchk_GA_grupo = new javax.swing.ButtonGroup();
         pnlBase = new javax.swing.JPanel();
         btnCerrarSesion = new javax.swing.JLabel();
         lblUserNameGeneral = new javax.swing.JLabel();
         btnCerrar = new javax.swing.JLabel();
         btnMinimizar = new javax.swing.JLabel();
-        tbdPrincipal = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        pnlAlimentos = new javax.swing.JTabbedPane();
+        pnlGestionAlimentos = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_GA_alimentos = new javax.swing.JTable();
+        txt_GA_nombre = new javax.swing.JTextField();
+        lbl_GA_nombre = new javax.swing.JLabel();
+        lbl_GA_numCal = new javax.swing.JLabel();
+        txt_GA_numCal = new javax.swing.JTextField();
+        lbl_GA_tipAlimento = new javax.swing.JLabel();
+        lbl_GA_estado = new javax.swing.JLabel();
+        btn_GA_guardar = new javax.swing.JButton();
+        btn_GA_limpiar = new javax.swing.JButton();
+        btn_GA_actualizar = new javax.swing.JButton();
+        lbl_GA_titulo = new javax.swing.JLabel();
+        lbl_GA_codigo = new javax.swing.JLabel();
+        txt_GA_codigo = new javax.swing.JTextField();
+        cmb_GA_tipos = new javax.swing.JComboBox<>();
+        chk_GA_activo = new javax.swing.JRadioButton();
+        chk_GA_inactivo = new javax.swing.JRadioButton();
+        pnlVistaAlimentos = new javax.swing.JPanel();
+        pnlReportes = new javax.swing.JPanel();
+        pnlGestionarUsuarios = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SmartHealth | Home");
         setUndecorated(true);
 
         pnlBase.setPreferredSize(new java.awt.Dimension(900, 630));
@@ -71,22 +146,149 @@ public class VentanaProcesos extends javax.swing.JFrame {
         });
         pnlBase.add(btnMinimizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(838, 3, 27, 27));
 
-        jPanel1.setBackground(new java.awt.Color(255, 0, 102));
+        pnlGestionAlimentos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        tbl_GA_alimentos.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        tbl_GA_alimentos.setModel(GA_tblModel);
+        tbl_GA_alimentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_GA_alimentosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_GA_alimentos);
+
+        pnlGestionAlimentos.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(344, 6, 550, 533));
+
+        txt_GA_nombre.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        txt_GA_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_GA_nombreKeyTyped(evt);
+            }
+        });
+        pnlGestionAlimentos.add(txt_GA_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, 170, 30));
+
+        lbl_GA_nombre.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        lbl_GA_nombre.setText("Nombre:");
+        pnlGestionAlimentos.add(lbl_GA_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 130, 30));
+
+        lbl_GA_numCal.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        lbl_GA_numCal.setText("Numero de calorias:");
+        pnlGestionAlimentos.add(lbl_GA_numCal, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 130, 30));
+
+        txt_GA_numCal.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        txt_GA_numCal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_GA_numCalKeyTyped(evt);
+            }
+        });
+        pnlGestionAlimentos.add(txt_GA_numCal, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 200, 170, 30));
+
+        lbl_GA_tipAlimento.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        lbl_GA_tipAlimento.setText("Tipo de alimento:");
+        pnlGestionAlimentos.add(lbl_GA_tipAlimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 130, 30));
+
+        lbl_GA_estado.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        lbl_GA_estado.setText("Estado:");
+        pnlGestionAlimentos.add(lbl_GA_estado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 130, 30));
+
+        btn_GA_guardar.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        btn_GA_guardar.setText("Guardar");
+        btn_GA_guardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_GA_guardarMouseClicked(evt);
+            }
+        });
+        pnlGestionAlimentos.add(btn_GA_guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 350, 100, 40));
+
+        btn_GA_limpiar.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        btn_GA_limpiar.setText("Limpiar");
+        btn_GA_limpiar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_GA_limpiarMouseClicked(evt);
+            }
+        });
+        pnlGestionAlimentos.add(btn_GA_limpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(233, 350, 100, 40));
+
+        btn_GA_actualizar.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        btn_GA_actualizar.setText("Actualizar");
+        this.btn_GA_actualizar.setEnabled(false);
+        btn_GA_actualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_GA_actualizarMouseClicked(evt);
+            }
+        });
+        pnlGestionAlimentos.add(btn_GA_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 350, 100, 40));
+
+        lbl_GA_titulo.setFont(new java.awt.Font("Trebuchet MS", 0, 18)); // NOI18N
+        lbl_GA_titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_GA_titulo.setText("Base de datos de los alimentos");
+        pnlGestionAlimentos.add(lbl_GA_titulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 300, 50));
+
+        lbl_GA_codigo.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        lbl_GA_codigo.setText("Codigo:");
+        pnlGestionAlimentos.add(lbl_GA_codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 130, 30));
+
+        txt_GA_codigo.setEnabled(false);
+        txt_GA_codigo.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        pnlGestionAlimentos.add(txt_GA_codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 170, 30));
+
+        cmb_GA_tipos.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        cmb_GA_tipos.setModel(GA_cmbModel);
+        pnlGestionAlimentos.add(cmb_GA_tipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 240, 170, 30));
+
+        grpchk_GA_grupo.add(chk_GA_activo);
+        chk_GA_activo.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        chk_GA_activo.setText("Activo");
+        chk_GA_activo.setSelected(true);
+        pnlGestionAlimentos.add(chk_GA_activo, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 280, -1, 30));
+
+        grpchk_GA_grupo.add(chk_GA_inactivo);
+        chk_GA_inactivo.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        chk_GA_inactivo.setText("Inactivo");
+        pnlGestionAlimentos.add(chk_GA_inactivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 280, -1, 30));
+
+        pnlAlimentos.addTab("Gestion Alimentos", pnlGestionAlimentos);
+
+        javax.swing.GroupLayout pnlVistaAlimentosLayout = new javax.swing.GroupLayout(pnlVistaAlimentos);
+        pnlVistaAlimentos.setLayout(pnlVistaAlimentosLayout);
+        pnlVistaAlimentosLayout.setHorizontalGroup(
+            pnlVistaAlimentosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 900, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 552, Short.MAX_VALUE)
+        pnlVistaAlimentosLayout.setVerticalGroup(
+            pnlVistaAlimentosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 554, Short.MAX_VALUE)
         );
 
-        tbdPrincipal.addTab("tab1", jPanel1);
+        pnlAlimentos.addTab("Vista Alimentos", pnlVistaAlimentos);
 
-        pnlBase.add(tbdPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 7, 900, 583));
+        javax.swing.GroupLayout pnlReportesLayout = new javax.swing.GroupLayout(pnlReportes);
+        pnlReportes.setLayout(pnlReportesLayout);
+        pnlReportesLayout.setHorizontalGroup(
+            pnlReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 900, Short.MAX_VALUE)
+        );
+        pnlReportesLayout.setVerticalGroup(
+            pnlReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 554, Short.MAX_VALUE)
+        );
+
+        pnlAlimentos.addTab("Reportes", pnlReportes);
+
+        javax.swing.GroupLayout pnlGestionarUsuariosLayout = new javax.swing.GroupLayout(pnlGestionarUsuarios);
+        pnlGestionarUsuarios.setLayout(pnlGestionarUsuariosLayout);
+        pnlGestionarUsuariosLayout.setHorizontalGroup(
+            pnlGestionarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 900, Short.MAX_VALUE)
+        );
+        pnlGestionarUsuariosLayout.setVerticalGroup(
+            pnlGestionarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 554, Short.MAX_VALUE)
+        );
+
+        pnlAlimentos.addTab("Gestion Usuarios", pnlGestionarUsuarios);
+
+        pnlBase.add(pnlAlimentos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 7, 900, 585));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -113,14 +315,136 @@ public class VentanaProcesos extends javax.swing.JFrame {
         setState(ICONIFIED);
     }//GEN-LAST:event_btnMinimizarMouseClicked
 
+    private void btn_GA_limpiarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_GA_limpiarMouseClicked
+        this.limpiarAlimentos();
+        this.cargarDatosAlimentos();
+    }//GEN-LAST:event_btn_GA_limpiarMouseClicked
+
+    private void tbl_GA_alimentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_GA_alimentosMouseClicked
+        this.limpiarAlimentos();
+        this.btn_GA_guardar.setEnabled(false);
+        this.btn_GA_actualizar.setEnabled(true);
+        int index = tbl_GA_alimentos.getSelectedRow();
+        this.txt_GA_codigo.setText(this.GA_codigo[index].toString());
+        this.txt_GA_nombre.setText(this.GA_nombre[index].toString());
+        this.txt_GA_numCal.setText(this.GA_calorias[index].toString());
+        this.cmb_GA_tipos.setSelectedItem(this.GA_tipo[index]);
+        if(this.GA_estado[index].toString().equals("true")){
+            this.chk_GA_activo.setSelected(true);
+        }else{
+            this.chk_GA_inactivo.setSelected(true);
+        }
+    }//GEN-LAST:event_tbl_GA_alimentosMouseClicked
+
+    private void btn_GA_guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_GA_guardarMouseClicked
+        double number = 0;
+        try{
+            number = Double.valueOf(this.txt_GA_numCal.getText().trim());
+        }catch(Exception e){
+        }
+        String respuesta = this.ap.compAlimento(this.txt_GA_nombre.getText().trim(),number);
+        if(!respuesta.isBlank()){
+            if(respuesta.contains("n")){
+                this.mc.colorTextFieldJ(this.txt_GA_nombre, Color.RED, Color.WHITE);
+            }
+            if(respuesta.contains("c")){
+                this.mc.colorTextFieldJ(this.txt_GA_numCal, Color.RED, Color.WHITE);
+            }
+            return;
+        }
+        boolean estado;
+        if(this.chk_GA_activo.isSelected()){
+            estado = true;
+        }else{
+            estado = false;
+        }
+        try{
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("EST_ALI", estado);
+            datos.put("NOM_ALI", this.txt_GA_nombre.getText());
+            datos.put("NUM_CAL_ALI", Double.valueOf(this.txt_GA_numCal.getText()));
+            datos.put("TIP_ALI", this.cmb_GA_tipos.getSelectedItem().toString());
+            this.ap.guardarAlimento("Alimentos", datos);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Error metodo guardarAlimento \n"+e);
+        }
+        this.cargarDatosAlimentos();
+        this.limpiarAlimentos();
+    }//GEN-LAST:event_btn_GA_guardarMouseClicked
+
+    private void txt_GA_nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_GA_nombreKeyTyped
+        this.mc.txtOnlyLetters(evt);
+    }//GEN-LAST:event_txt_GA_nombreKeyTyped
+
+    private void txt_GA_numCalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_GA_numCalKeyTyped
+        this.mc.txtOnlyDoubles(evt);
+    }//GEN-LAST:event_txt_GA_numCalKeyTyped
+
+    private void btn_GA_actualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_GA_actualizarMouseClicked
+        double number = 0;
+        try{
+            number = Double.valueOf(this.txt_GA_numCal.getText().trim());
+        }catch(Exception e){
+        }
+        String respuesta = this.ap.compAlimento(this.txt_GA_nombre.getText().trim(),number);
+        if(!respuesta.isBlank()){
+            if(respuesta.contains("n")){
+                this.mc.colorTextFieldJ(this.txt_GA_nombre, Color.RED, Color.WHITE);
+            }
+            if(respuesta.contains("c")){
+                this.mc.colorTextFieldJ(this.txt_GA_numCal, Color.RED, Color.WHITE);
+            }
+            return;
+        }
+        boolean estado;
+        if(this.chk_GA_activo.isSelected()){
+            estado = true;
+        }else{
+            estado = false;
+        }
+        try{
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("EST_ALI", estado);
+            datos.put("NOM_ALI", this.txt_GA_nombre.getText());
+            datos.put("NUM_CAL_ALI", Double.valueOf(this.txt_GA_numCal.getText()));
+            datos.put("TIP_ALI", this.cmb_GA_tipos.getSelectedItem().toString());
+            this.ap.actualizarAlimento("Alimentos",this.txt_GA_codigo.getText(), datos);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Error metodo guardarAlimento \n"+e);
+        }
+        this.cargarDatosAlimentos();
+        this.limpiarAlimentos();
+    }//GEN-LAST:event_btn_GA_actualizarMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnCerrar;
     public javax.swing.JLabel btnCerrarSesion;
     private javax.swing.JLabel btnMinimizar;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton btn_GA_actualizar;
+    private javax.swing.JButton btn_GA_guardar;
+    private javax.swing.JButton btn_GA_limpiar;
+    private javax.swing.JRadioButton chk_GA_activo;
+    private javax.swing.JRadioButton chk_GA_inactivo;
+    private javax.swing.JComboBox<String> cmb_GA_tipos;
+    private javax.swing.ButtonGroup grpchk_GA_grupo;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblUserNameGeneral;
+    private javax.swing.JLabel lbl_GA_codigo;
+    private javax.swing.JLabel lbl_GA_estado;
+    private javax.swing.JLabel lbl_GA_nombre;
+    private javax.swing.JLabel lbl_GA_numCal;
+    private javax.swing.JLabel lbl_GA_tipAlimento;
+    private javax.swing.JLabel lbl_GA_titulo;
+    private javax.swing.JTabbedPane pnlAlimentos;
     private javax.swing.JPanel pnlBase;
-    private javax.swing.JTabbedPane tbdPrincipal;
+    private javax.swing.JPanel pnlGestionAlimentos;
+    private javax.swing.JPanel pnlGestionarUsuarios;
+    private javax.swing.JPanel pnlReportes;
+    private javax.swing.JPanel pnlVistaAlimentos;
+    private javax.swing.JTable tbl_GA_alimentos;
+    private javax.swing.JTextField txt_GA_codigo;
+    private javax.swing.JTextField txt_GA_nombre;
+    private javax.swing.JTextField txt_GA_numCal;
     // End of variables declaration//GEN-END:variables
 
 // <editor-fold defaultstate="collapsed" desc=" look and feel "> 
