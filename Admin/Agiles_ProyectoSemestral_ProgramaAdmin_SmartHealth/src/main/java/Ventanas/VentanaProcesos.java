@@ -49,31 +49,14 @@ public class VentanaProcesos extends javax.swing.JFrame {
         this.mc.crearBoton(this.btnCerrar, "ico_cerrar.png", "ico_cerrar_hover.png");
         this.mc.crearBoton(this.btnMinimizar, "ico_minimizar.png", "ico_minimizar_hover.png");
         this.mc.crearBoton(this.btnCerrarSesion, "ico_cerrar.png", "ico_cerrarSesion_hover.png");
-
-        this.VA_botones = new ArrayList<JButton>();
-        for (int i = 0; i < this.GA_cmbModelTitulos.length; i++) {
-            final String opcion = this.GA_cmbModelTitulos[i];
-            JButton boton = new JButton(this.GA_cmbModelTitulos[i]);
-            boton.setSize(new Dimension(100, 40));
-            boton.setPreferredSize(new Dimension(100, 40));
-            Font font = new Font("Trebuchet MS", Font.PLAIN, 14);
-            boton.setFont(font);
-            boton.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    cambiarVista(opcion);
-                }
-            });
-            this.pnl_VA_botones.add(boton);
-            this.VA_botones.add(boton);
-        }
-        this.pnl_VA_botones.updateUI();
     }
 
     public void lanzarVentana(String userName) {
         this.lblUserNameGeneral.setText(userName);
 
         this.cargarDatosAlimentos();
-
+        this.cargarVentanaVsitaAlimentos();
+        
         setVisible(true);
     }
 
@@ -167,30 +150,50 @@ public class VentanaProcesos extends javax.swing.JFrame {
         for (int i = 0; i < this.GA_codigo.length; i++) {
             JLabel cuadro = new JLabel();
             JLabel pintura = new JLabel();
-            JLabel texto = null;
+            JLabel texto = new JLabel(this.GA_nombre[i].toString());
             // Establecer el tamaño y la posición del cuadro y la pintura
             cuadro.setSize(200, 200); // Establecer el tamaño deseado para el cuadro
-            pintura.setBounds(0, 0, cuadro.getWidth(), (int) (cuadro.getHeight() * 0.9)); // Establecer el tamaño del 90% del cuadro
             cuadro.setBorder(new EmptyBorder(10,10,10,10));
+            pintura.setBounds(0, 0, cuadro.getWidth(), (int) (cuadro.getHeight() * 0.9)); // Establecer el tamaño del 90% del cuadro
+            texto.setBounds(0, pintura.getHeight(), cuadro.getWidth(), (int) (cuadro.getHeight() * 0.1));
             if (!opcion.equals("TODOS")) {
                 if (this.GA_tipo[i].equals(opcion)) {
                     this.mc.crearPintura(pintura, this.GA_codigo[i].toString() + ".png");
-                    texto = new JLabel(this.GA_nombre[i].toString());
-                    texto.setBounds(0, pintura.getHeight(), cuadro.getWidth(), (int) (cuadro.getHeight() * 0.1));
                     cuadro.add(pintura);
                     cuadro.add(texto);
                     this.pnl_VA_vista.add(cuadro);
                 }
             } else {
                 this.mc.crearPintura(pintura, this.GA_codigo[i].toString() + ".png");
-                texto = new JLabel(this.GA_nombre[i].toString());
-                texto.setBounds(0, pintura.getHeight(), cuadro.getWidth(), (int) (cuadro.getHeight() * 0.1));
                 cuadro.add(pintura);
                 cuadro.add(texto);
                 this.pnl_VA_vista.add(cuadro);
             }
         }
         this.pnl_VA_vista.updateUI();
+    }
+    
+    public void cargarVentanaVsitaAlimentos(){
+        this.pnl_VA_botones.removeAll();
+        this.pnl_VA_botones.revalidate();
+        this.pnl_VA_botones.repaint();
+        this.VA_botones = new ArrayList<JButton>();
+        for (int i = 0; i < this.GA_cmbModelTitulos.length; i++) {
+            final String opcion = this.GA_cmbModelTitulos[i];
+            JButton boton = new JButton(this.GA_cmbModelTitulos[i]);
+            boton.setSize(new Dimension(100, 40));
+            boton.setPreferredSize(new Dimension(100, 40));
+            Font font = new Font("Trebuchet MS", Font.PLAIN, 14);
+            boton.setFont(font);
+            boton.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    cambiarVista(opcion);
+                }
+            });
+            this.pnl_VA_botones.add(boton);
+            this.VA_botones.add(boton);
+        }
+        this.pnl_VA_botones.updateUI();
     }
 // </editor-fold>   
 
@@ -470,12 +473,14 @@ public class VentanaProcesos extends javax.swing.JFrame {
     private void btn_GA_actualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_GA_actualizarMouseClicked
         this.guardarActualizarAlimentos(2);
     }//GEN-LAST:event_btn_GA_actualizarMouseClicked
-
+// </editor-fold>  
+    
+// <editor-fold defaultstate="collapsed" desc=" eventos pestania vista Alimentos ">
     private void btn_VA_todosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_VA_todosMouseClicked
         this.cambiarVista("TODOS");
     }//GEN-LAST:event_btn_VA_todosMouseClicked
 // </editor-fold>  
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnCerrar;
     public javax.swing.JLabel btnCerrarSesion;
