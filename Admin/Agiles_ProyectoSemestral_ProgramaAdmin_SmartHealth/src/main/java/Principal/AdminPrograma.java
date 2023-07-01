@@ -2,10 +2,12 @@ package Principal;
 
 // Made by JosliBlue
 import Complementos.*;
+import java.awt.Image;
 import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JLabel;
 
 public class AdminPrograma {
 
@@ -84,6 +86,10 @@ public class AdminPrograma {
         return this.mfb.obtenerDatos(nomCollection,nombreColumna);
     }
     
+    public String[] obtenerTiposAlimentos(String nomCollection, String nombreDocuemnto){
+        return this.mfb.obtenerDatosDocumento(nomCollection, nombreDocuemnto);
+    }
+    
 // <editor-fold defaultstate="collapsed" desc=" metodos pestania alimentos "> 
     public String compAlimento(String nombre, double numCal){
         String respuesta = "";
@@ -96,12 +102,15 @@ public class AdminPrograma {
         return respuesta;
     }
     
-    public void guardarAlimento(String coleccion, Map<String, Object> data){
+    public void guardarAlimento(String coleccion, Map<String, Object> data, String urlImg){
         String cod = this.generarCadenaAleatoria(20);
-        this.mfb.guardarRegistro(coleccion, cod, data);
+        this.mfb.guardarRegistroImg(coleccion, cod, data, urlImg);
     }
     public void actualizarAlimento(String coleccion, String documento, Map<String, Object> data){
         this.mfb.guardarRegistro(coleccion, documento, data);
+    }
+    public void crearPintura(JLabel label, String nombreImg) {
+        this.mfb.asignarImagenALabel(label, nombreImg);
     }
 // </editor-fold> 
 

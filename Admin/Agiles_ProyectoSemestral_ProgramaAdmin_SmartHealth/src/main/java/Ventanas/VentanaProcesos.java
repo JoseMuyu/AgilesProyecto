@@ -5,6 +5,7 @@ import Complementos.ManejoComponentes;
 import Principal.AdminPrograma;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -14,10 +15,12 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 public class VentanaProcesos extends javax.swing.JFrame {
@@ -29,34 +32,36 @@ public class VentanaProcesos extends javax.swing.JFrame {
     Object[] GA_codigo, GA_nombre, GA_calorias, GA_tipo, GA_estado;
     String[] GA_tblModelTitulos = {"NOMBRE", "CALORIAS", "TIPO", "ESTADO"};
     DefaultTableModel GA_tblModel = new DefaultTableModel(this.GA_tblModelTitulos, 0);
-    String[] GA_cmbModelTitulos = {"VERDURA", "FRUTA", "GRANO", "LEGUMBRE", "PROTEINA"};
-    DefaultComboBoxModel<String> GA_cmbModel = new DefaultComboBoxModel<>(this.GA_cmbModelTitulos);
+    String[] GA_cmbModelTitulos;
+    DefaultComboBoxModel<String> GA_cmbModel;
 
     // variables pestania VistaAlimentos
     private List<JButton> VA_botones;
 
     public VentanaProcesos() {
-        this.initFrontend();
+        lookAndFeel();
+
+        //cargar los tipos de alimentos
+        this.GA_cmbModelTitulos = this.ap.obtenerTiposAlimentos("TiposAlimentos", "TodosLosTipos");
+        this.GA_cmbModel = new DefaultComboBoxModel<>(this.GA_cmbModelTitulos);
+
+        initComponents();
     }
 // METODOS ---------------------------------------------------------------------
 
-    public void initFrontend() {
-        lookAndFeel();
-        initComponents();
+    public void lanzarVentana(String userName) {
+        this.lblUserNameGeneral.setText(userName);
+
         setLocationRelativeTo(this);
         Image img = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\Imagenes\\logo_App.png");
         this.setIconImage(img);
         this.mc.crearBoton(this.btnCerrar, "ico_cerrar.png", "ico_cerrar_hover.png");
         this.mc.crearBoton(this.btnMinimizar, "ico_minimizar.png", "ico_minimizar_hover.png");
         this.mc.crearBoton(this.btnCerrarSesion, "ico_cerrar.png", "ico_cerrarSesion_hover.png");
-    }
-
-    public void lanzarVentana(String userName) {
-        this.lblUserNameGeneral.setText(userName);
 
         this.cargarDatosAlimentos();
         this.cargarVentanaVsitaAlimentos();
-        
+
         setVisible(true);
     }
 
@@ -101,6 +106,8 @@ public class VentanaProcesos extends javax.swing.JFrame {
     }
 
     public void guardarActualizarAlimentos(int opcion) {
+        // 1 para guardar
+        // 2 para actualizar
         double number = 0;
         try {
             number = Double.valueOf(this.txt_GA_numCal.getText().trim());
@@ -122,6 +129,19 @@ public class VentanaProcesos extends javax.swing.JFrame {
         } else {
             estado = false;
         }
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setDialogTitle("Imagen del alimento");
+        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("Solo archivos .PNG", "png");
+        jFileChooser.setFileFilter(filtrado);
+
+        int resultado = jFileChooser.showOpenDialog(this);
+
+        if (resultado != JFileChooser.APPROVE_OPTION) {
+            JOptionPane.showMessageDialog(this, "Tienes que elegir una imagen\nOperacion cancelada");
+            return;
+        }
+        String rutaImagen = jFileChooser.getSelectedFile().getPath();
+        
         try {
             Map<String, Object> datos = new HashMap<>();
             datos.put("EST_ALI", estado);
@@ -129,12 +149,12 @@ public class VentanaProcesos extends javax.swing.JFrame {
             datos.put("NUM_CAL_ALI", Double.valueOf(this.txt_GA_numCal.getText()));
             datos.put("TIP_ALI", this.cmb_GA_tipos.getSelectedItem().toString());
             if (opcion == 1) {
-                this.ap.guardarAlimento("Alimentos", datos);
+                this.ap.guardarAlimento("Alimentos", datos, rutaImagen);
             } else {
                 this.ap.actualizarAlimento("Alimentos", this.txt_GA_codigo.getText(), datos);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error metodo guardar/actualizar alimento \n" + e);
+            JOptionPane.showMessageDialog(this, "Error metodo guardar/actualizar alimento(ventanaProceso) \n" + e);
         }
         this.cargarDatosAlimentos();
         this.limpiarAlimentos();
@@ -148,32 +168,35 @@ public class VentanaProcesos extends javax.swing.JFrame {
         this.pnl_VA_vista.repaint();
 
         for (int i = 0; i < this.GA_codigo.length; i++) {
-            JLabel cuadro = new JLabel();
+            JPanel cuadro = new JPanel(); // Cambiamos JLabel a JPanel
             JLabel pintura = new JLabel();
             JLabel texto = new JLabel(this.GA_nombre[i].toString());
+
             // Establecer el tamaño y la posición del cuadro y la pintura
-            cuadro.setSize(200, 200); // Establecer el tamaño deseado para el cuadro
-            cuadro.setBorder(new EmptyBorder(10,10,10,10));
-            pintura.setBounds(0, 0, cuadro.getWidth(), (int) (cuadro.getHeight() * 0.9)); // Establecer el tamaño del 90% del cuadro
-            texto.setBounds(0, pintura.getHeight(), cuadro.getWidth(), (int) (cuadro.getHeight() * 0.1));
-            if (!opcion.equals("TODOS")) {
+            cuadro.setSize(200, 350);
+            pintura.setSize(160, 175);
+            texto.setSize(160, 50);
+
+            cuadro.setBackground(new Color(204, 225, 204)); // Establecer el color de fondo
+            cuadro.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            if (opcion.equals("TODOS")) {
+                this.ap.crearPintura(pintura, this.GA_codigo[i].toString() + ".png");
+                cuadro.add(pintura);
+                cuadro.add(texto);
+                this.pnl_VA_vista.add(cuadro);
+            } else {
                 if (this.GA_tipo[i].equals(opcion)) {
-                    this.mc.crearPintura(pintura, this.GA_codigo[i].toString() + ".png");
+                    this.ap.crearPintura(pintura, this.GA_codigo[i].toString() + ".png");
                     cuadro.add(pintura);
                     cuadro.add(texto);
                     this.pnl_VA_vista.add(cuadro);
                 }
-            } else {
-                this.mc.crearPintura(pintura, this.GA_codigo[i].toString() + ".png");
-                cuadro.add(pintura);
-                cuadro.add(texto);
-                this.pnl_VA_vista.add(cuadro);
             }
         }
         this.pnl_VA_vista.updateUI();
     }
-    
-    public void cargarVentanaVsitaAlimentos(){
+
+    public void cargarVentanaVsitaAlimentos() {
         this.pnl_VA_botones.removeAll();
         this.pnl_VA_botones.revalidate();
         this.pnl_VA_botones.repaint();
@@ -364,7 +387,6 @@ public class VentanaProcesos extends javax.swing.JFrame {
 
         pnlVistaAlimentos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        pnl_VA_botones.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         pnl_VA_botones.setLayout(new java.awt.GridLayout(0, 1));
         pnlVistaAlimentos.add(pnl_VA_botones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 120, -1));
 
@@ -376,10 +398,9 @@ public class VentanaProcesos extends javax.swing.JFrame {
                 btn_VA_todosMouseClicked(evt);
             }
         });
-        pnlVistaAlimentos.add(btn_VA_todos, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 120, 40));
+        pnlVistaAlimentos.add(btn_VA_todos, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 120, 40));
 
-        pnl_VA_vista.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        pnl_VA_vista.setLayout(new java.awt.GridLayout(0, 4));
+        pnl_VA_vista.setLayout(new java.awt.GridLayout(0, 4, 15, 15));
         pnlVistaAlimentos.add(pnl_VA_vista, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 710, 520));
 
         pnlAlimentos.addTab("Vista Alimentos", pnlVistaAlimentos);
@@ -459,6 +480,7 @@ public class VentanaProcesos extends javax.swing.JFrame {
     }//GEN-LAST:event_tbl_GA_alimentosMouseClicked
 
     private void btn_GA_guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_GA_guardarMouseClicked
+
         this.guardarActualizarAlimentos(1);
     }//GEN-LAST:event_btn_GA_guardarMouseClicked
 
@@ -474,13 +496,13 @@ public class VentanaProcesos extends javax.swing.JFrame {
         this.guardarActualizarAlimentos(2);
     }//GEN-LAST:event_btn_GA_actualizarMouseClicked
 // </editor-fold>  
-    
+
 // <editor-fold defaultstate="collapsed" desc=" eventos pestania vista Alimentos ">
     private void btn_VA_todosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_VA_todosMouseClicked
         this.cambiarVista("TODOS");
     }//GEN-LAST:event_btn_VA_todosMouseClicked
 // </editor-fold>  
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnCerrar;
     public javax.swing.JLabel btnCerrarSesion;

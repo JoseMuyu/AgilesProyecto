@@ -8,20 +8,9 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import javax.swing.ImageIcon;
 
 import com.google.firebase.cloud.StorageClient;
 import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.Blob;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
 
 public class Coneccion {
 
@@ -120,33 +109,6 @@ public class Coneccion {
         }
     }
 
-    public void asignarImagenALabel(JLabel label, String nombreImagen) {
-    try {
-        // Obtener referencia al archivo de imagen en Firebase Cloud Storage
-        Blob blob = raiz.get(nombreImagen);
-
-        if (blob != null) {
-            // Obtener los bytes de la imagen del blob
-            byte[] bytes = blob.getContent();
-
-            // Crear una imagen desde los bytes
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-            BufferedImage bufferedImage = ImageIO.read(inputStream);
-
-            // Redimensionar la imagen para que ocupe todo el label
-            Image resizedImage = bufferedImage.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
-
-            // Crear un ImageIcon a partir de la imagen redimensionada
-            ImageIcon icon = new ImageIcon(resizedImage);
-
-            // Asignar la imagen al componente de etiqueta
-            label.setIcon(icon);
-        } else {
-            System.out.println("El archivo de imagen no existe en Firebase Cloud Storage.");
-        }
-    } catch (IOException e) {
-        System.out.println("Error al obtener la imagen desde Firebase Cloud Storage: " + e.getMessage());
-    }
-}
+    
 
 }

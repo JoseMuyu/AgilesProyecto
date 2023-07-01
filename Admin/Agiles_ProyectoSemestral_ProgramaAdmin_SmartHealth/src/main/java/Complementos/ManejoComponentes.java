@@ -10,7 +10,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,9 +21,6 @@ public class ManejoComponentes {
 // <editor-fold defaultstate="collapsed" desc=" METODOS PARA LABELS ">
     public void crearlabel(JLabel label, String nombreImg) {
         rsscalelabel.RSScaleLabel.setScaleLabel(label, this.rutaImagenes + nombreImg);
-    }
-    public void crearPintura(JLabel label, String nombreImg) {
-        conex.asignarImagenALabel(label, nombreImg);
     }
 
     public void crearBoton(JLabel label, String nombreImg, String nombreImgHover) {
