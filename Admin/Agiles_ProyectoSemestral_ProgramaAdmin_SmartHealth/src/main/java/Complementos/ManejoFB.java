@@ -212,7 +212,7 @@ public class ManejoFB {
                 BufferedImage bufferedImage = ImageIO.read(inputStream);
 
                 // Redimensionar la imagen para que ocupe todo el label
-                Image resizedImage = bufferedImage.getScaledInstance(label.getWidth(), label.getHeight() - 10, Image.SCALE_SMOOTH);
+                Image resizedImage = bufferedImage.getScaledInstance(160, 125, Image.SCALE_SMOOTH);
 
                 // Crear un ImageIcon a partir de la imagen redimensionada
                 ImageIcon icon = new ImageIcon(resizedImage);
@@ -222,7 +222,7 @@ public class ManejoFB {
                 label.setLayout(layout);
 
                 // Centrar la imagen en el JLabel
-                label.setVerticalAlignment(SwingConstants.CENTER);
+                //label.setVerticalAlignment(SwingConstants.CENTER);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 label.setIcon(icon);
             } else {

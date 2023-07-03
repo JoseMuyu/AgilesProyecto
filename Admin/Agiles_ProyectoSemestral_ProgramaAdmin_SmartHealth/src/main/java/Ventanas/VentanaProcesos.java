@@ -3,10 +3,11 @@ package Ventanas;
 // Made by JosliBlue
 import Complementos.ManejoComponentes;
 import Principal.AdminPrograma;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -141,7 +143,7 @@ public class VentanaProcesos extends javax.swing.JFrame {
             return;
         }
         String rutaImagen = jFileChooser.getSelectedFile().getPath();
-        
+
         try {
             Map<String, Object> datos = new HashMap<>();
             datos.put("EST_ALI", estado);
@@ -167,6 +169,11 @@ public class VentanaProcesos extends javax.swing.JFrame {
         this.pnl_VA_vista.revalidate();
         this.pnl_VA_vista.repaint();
 
+        JPanel contenido = new JPanel(new GridLayout(0, 4, 10, 10)); // Panel para el contenido con GridLayout
+        //contenido.setPreferredSize(new Dimension(710, 520)); // Establecer tamaño específico
+        contenido.setSize(new Dimension(710, 520)); // Establecer tamaño específico
+        contenido.setSize(710, 520); // Establecer tamaño específico
+
         for (int i = 0; i < this.GA_codigo.length; i++) {
             JPanel cuadro = new JPanel(); // Cambiamos JLabel a JPanel
             JLabel pintura = new JLabel();
@@ -178,22 +185,23 @@ public class VentanaProcesos extends javax.swing.JFrame {
             texto.setSize(160, 50);
 
             cuadro.setBackground(new Color(204, 225, 204)); // Establecer el color de fondo
-            cuadro.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-            if (opcion.equals("TODOS")) {
+            cuadro.setLayout(new BorderLayout()); // Cambiamos el layout a BorderLayout
+
+            if (opcion.equals("TODOS") || this.GA_tipo[i].equals(opcion)) {
                 this.ap.crearPintura(pintura, this.GA_codigo[i].toString() + ".png");
-                cuadro.add(pintura);
-                cuadro.add(texto);
-                this.pnl_VA_vista.add(cuadro);
-            } else {
-                if (this.GA_tipo[i].equals(opcion)) {
-                    this.ap.crearPintura(pintura, this.GA_codigo[i].toString() + ".png");
-                    cuadro.add(pintura);
-                    cuadro.add(texto);
-                    this.pnl_VA_vista.add(cuadro);
-                }
+                cuadro.add(pintura, BorderLayout.NORTH);
+                cuadro.add(texto, BorderLayout.SOUTH); // Agregamos el JLabel "texto" en SOUTH
+                //this.pnl_VA_vista.add(cuadro);
+                contenido.add(cuadro);
             }
         }
-        this.pnl_VA_vista.updateUI();
+        JScrollPane scrollPane = new JScrollPane(contenido);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        this.pnl_VA_vista.setLayout(new BorderLayout());
+        this.pnl_VA_vista.add(scrollPane, BorderLayout.CENTER);
+        this.pnl_VA_vista.revalidate();
+        this.pnl_VA_vista.repaint();
     }
 
     public void cargarVentanaVsitaAlimentos() {
@@ -400,7 +408,19 @@ public class VentanaProcesos extends javax.swing.JFrame {
         });
         pnlVistaAlimentos.add(btn_VA_todos, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 120, 40));
 
-        pnl_VA_vista.setLayout(new java.awt.GridLayout(0, 4, 15, 15));
+        pnl_VA_vista.setAutoscrolls(true);
+
+        javax.swing.GroupLayout pnl_VA_vistaLayout = new javax.swing.GroupLayout(pnl_VA_vista);
+        pnl_VA_vista.setLayout(pnl_VA_vistaLayout);
+        pnl_VA_vistaLayout.setHorizontalGroup(
+            pnl_VA_vistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 710, Short.MAX_VALUE)
+        );
+        pnl_VA_vistaLayout.setVerticalGroup(
+            pnl_VA_vistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 520, Short.MAX_VALUE)
+        );
+
         pnlVistaAlimentos.add(pnl_VA_vista, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 710, 520));
 
         pnlAlimentos.addTab("Vista Alimentos", pnlVistaAlimentos);

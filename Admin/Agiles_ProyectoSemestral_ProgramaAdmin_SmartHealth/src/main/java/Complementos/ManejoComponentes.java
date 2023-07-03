@@ -39,10 +39,8 @@ public class ManejoComponentes {
             }
         });
     }
-    
-    
-// </editor-fold>
 
+// </editor-fold>
     public String claveToString(JPasswordField p) {
         char[] passwordChars = p.getPassword();
         String password = new String(passwordChars);
@@ -55,7 +53,7 @@ public class ManejoComponentes {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 if (colorGod.equals(Color.GREEN)) {
                     txt.setBorder(new LineBorder(new Color(153, 255, 153), 3));
-                }else{
+                } else {
                     txt.setBorder(new LineBorder(colorGod));
                 }
             }
@@ -89,7 +87,8 @@ public class ManejoComponentes {
     }
 
     public void txtOnlyLetters(java.awt.event.KeyEvent evt) {
-        if (!Character.isAlphabetic(evt.getKeyChar())) {
+        char c = evt.getKeyChar();
+        if (!(Character.isLetter(c) || c == ' ')) {
             evt.consume();
         }
     }
