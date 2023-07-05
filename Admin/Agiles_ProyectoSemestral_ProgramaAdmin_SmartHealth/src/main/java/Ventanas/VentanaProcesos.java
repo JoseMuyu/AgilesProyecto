@@ -40,6 +40,12 @@ public class VentanaProcesos extends javax.swing.JFrame {
     // variables pestania VistaAlimentos
     private List<JButton> VA_botones;
 
+    //variables pestania gestion usuarios
+    Object[] VU_nombres, VU_apellidos, VU_fecNacs, VU_mails, VU_alturas, VU_pesos;
+    String[] VU_tblModelTitulos = {"NOMBRE", "APELLIDO", "NACIDO", "MAIL", "ALTURA", "PESO"};
+    DefaultTableModel VU_tblModel = new DefaultTableModel(this.VU_tblModelTitulos, 0);
+
+// METODOS ---------------------------------------------------------------------
     public VentanaProcesos() {
         lookAndFeel();
 
@@ -49,7 +55,6 @@ public class VentanaProcesos extends javax.swing.JFrame {
 
         initComponents();
     }
-// METODOS ---------------------------------------------------------------------
 
     public void lanzarVentana(String userName) {
         this.lblUserNameGeneral.setText(userName);
@@ -63,6 +68,7 @@ public class VentanaProcesos extends javax.swing.JFrame {
 
         this.cargarDatosAlimentos();
         this.cargarVentanaVsitaAlimentos();
+        this.iniciarPestaniaGestionUsuario();
 
         setVisible(true);
     }
@@ -209,14 +215,14 @@ public class VentanaProcesos extends javax.swing.JFrame {
         this.pnl_VA_botones.revalidate();
         this.pnl_VA_botones.repaint();
         this.VA_botones = new ArrayList<JButton>();
-        for (int i = 0; i < this.GA_cmbModelTitulos.length; i++) {
-            final String opcion = this.GA_cmbModelTitulos[i];
-            JButton boton = new JButton(this.GA_cmbModelTitulos[i]);
+        for (String opcion : this.GA_cmbModelTitulos) {
+            JButton boton = new JButton(opcion);
             boton.setSize(new Dimension(100, 40));
             boton.setPreferredSize(new Dimension(100, 40));
             Font font = new Font("Trebuchet MS", Font.PLAIN, 14);
             boton.setFont(font);
             boton.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     cambiarVista(opcion);
                 }
@@ -226,7 +232,29 @@ public class VentanaProcesos extends javax.swing.JFrame {
         }
         this.pnl_VA_botones.updateUI();
     }
-// </editor-fold>   
+// </editor-fold>  
+
+// <editor-fold defaultstate="collapsed" desc=" metodos pestania Vista Usuarios ">
+    public void iniciarPestaniaGestionUsuario() {
+        this.VU_nombres = this.ap.obtenerDatos("USUARIOS", "NOM_USU");
+        this.VU_apellidos = this.ap.obtenerDatos("USUARIOS", "APE_USU");
+        this.VU_fecNacs = this.ap.obtenerDatos("USUARIOS", "FEC_NAC_USU");
+        this.VU_mails = this.ap.obtenerDatos("USUARIOS", "COR_USU");
+        this.VU_alturas = this.ap.obtenerDatos("USUARIOS", "ALT_USU");
+        this.VU_pesos = this.ap.obtenerDatos("USUARIOS", "PES_USU");
+        
+        for(int i=0; i<this.VU_nombres.length; i++){
+            String[] registro = {this.VU_nombres[i].toString(),
+                                this.VU_apellidos[i].toString(),
+                                this.VU_fecNacs[i].toString(),
+                                this.VU_mails[i].toString(),
+                                this.VU_alturas[i].toString(),
+                                this.VU_pesos[i].toString()};
+            this.VU_tblModel.addRow(registro);
+        }
+
+    }
+// </editor-fold>  
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -262,7 +290,9 @@ public class VentanaProcesos extends javax.swing.JFrame {
         btn_VA_todos = new javax.swing.JButton();
         pnl_VA_vista = new javax.swing.JPanel();
         pnlReportes = new javax.swing.JPanel();
-        pnlGestionarUsuarios = new javax.swing.JPanel();
+        pnlVistaUsuarios = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbl_GU = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SmartHealth | Home");
@@ -438,18 +468,27 @@ public class VentanaProcesos extends javax.swing.JFrame {
 
         pnlAlimentos.addTab("Reportes", pnlReportes);
 
-        javax.swing.GroupLayout pnlGestionarUsuariosLayout = new javax.swing.GroupLayout(pnlGestionarUsuarios);
-        pnlGestionarUsuarios.setLayout(pnlGestionarUsuariosLayout);
-        pnlGestionarUsuariosLayout.setHorizontalGroup(
-            pnlGestionarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
+        tbl_GU.setModel(VU_tblModel);
+        jScrollPane2.setViewportView(tbl_GU);
+
+        javax.swing.GroupLayout pnlVistaUsuariosLayout = new javax.swing.GroupLayout(pnlVistaUsuarios);
+        pnlVistaUsuarios.setLayout(pnlVistaUsuariosLayout);
+        pnlVistaUsuariosLayout.setHorizontalGroup(
+            pnlVistaUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlVistaUsuariosLayout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 701, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(100, Short.MAX_VALUE))
         );
-        pnlGestionarUsuariosLayout.setVerticalGroup(
-            pnlGestionarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 554, Short.MAX_VALUE)
+        pnlVistaUsuariosLayout.setVerticalGroup(
+            pnlVistaUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlVistaUsuariosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
-        pnlAlimentos.addTab("Gestion Usuarios", pnlGestionarUsuarios);
+        pnlAlimentos.addTab("Vista Usuarios", pnlVistaUsuarios);
 
         pnlBase.add(pnlAlimentos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 7, 900, 585));
 
@@ -477,6 +516,7 @@ public class VentanaProcesos extends javax.swing.JFrame {
     private void btnMinimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMinimizarMouseClicked
         setState(ICONIFIED);
     }//GEN-LAST:event_btnMinimizarMouseClicked
+
 // <editor-fold defaultstate="collapsed" desc=" eventos pestania Gestionar Alimentos ">
     private void btn_GA_limpiarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_GA_limpiarMouseClicked
         this.limpiarAlimentos();
@@ -536,6 +576,7 @@ public class VentanaProcesos extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmb_GA_tipos;
     private javax.swing.ButtonGroup grpchk_GA_grupo;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblUserNameGeneral;
     private javax.swing.JLabel lbl_GA_codigo;
     private javax.swing.JLabel lbl_GA_estado;
@@ -546,12 +587,13 @@ public class VentanaProcesos extends javax.swing.JFrame {
     private javax.swing.JTabbedPane pnlAlimentos;
     private javax.swing.JPanel pnlBase;
     private javax.swing.JPanel pnlGestionAlimentos;
-    private javax.swing.JPanel pnlGestionarUsuarios;
     private javax.swing.JPanel pnlReportes;
     private javax.swing.JPanel pnlVistaAlimentos;
+    private javax.swing.JPanel pnlVistaUsuarios;
     private javax.swing.JPanel pnl_VA_botones;
     private javax.swing.JPanel pnl_VA_vista;
     private javax.swing.JTable tbl_GA_alimentos;
+    private javax.swing.JTable tbl_GU;
     private javax.swing.JTextField txt_GA_codigo;
     private javax.swing.JTextField txt_GA_nombre;
     private javax.swing.JTextField txt_GA_numCal;

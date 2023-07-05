@@ -78,9 +78,7 @@ public class ManejoFB {
         return false;
     }
 // </editor-fold> 
-
-// <editor-fold defaultstate="collapsed" desc=" METODOS PESTANIA ALIMENTOS ">
-// </editor-fold> 
+    
     public void guardarRegistro(String coleccion, String documento, Map<String, Object> data) {
         try {
             DocumentReference docRef = cn.getBd().collection(coleccion).document(documento);
